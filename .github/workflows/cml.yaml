@@ -1,0 +1,30 @@
+name: train-my-model
+
+on: push
+
+jobs:
+  run:
+    runs-on: [ubuntu-latest]
+    #container: docker://dvcorg/cml-py3:latest
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - uses: actions/checkout@v2
+      - name: cml_run
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm i -g @dvcorg/cml
+
+          #sudo apt-get install -y libcairo2-dev libpango1.0-dev libjpeg-dev
+          #sudo apt-get install -y libgif-dev librsvg2-dev libfontconfig-dev
+          #npm install -g vega-cli vega-lite
+
+          echo "hello world!"  > report.md
+
+          #vl2png logs.vega.json > img.png
+          #cml-publish --md img.png >> report.md
+
+          cml-send-comment report.md
+
